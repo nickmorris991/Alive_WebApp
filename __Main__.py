@@ -9,6 +9,8 @@ import requests
 import json
 import argparse
 import sys
+
+#flask Microframework
 from flask import Flask, render_template
 
 
@@ -32,7 +34,7 @@ SEARCH_PATH = '/v3/businesses/search'
 BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
 TOKEN_PATH = '/oauth2/token'
 GRANT_TYPE = 'client_credentials'
-
+SEARCH_LIMIT = 10
 
 # a POST call to obtain access token
 def obtain_bearer_token(host, path):
@@ -59,17 +61,20 @@ def obtain_bearer_token(host, path):
     }
     response = requests.request('POST', url, data=data, headers=headers)
     bearer_token = response.json()['access_token']
-    return bearer_token
+    return bearer_token #used to perform api queries
 
 
-#main function for homepage
+# flask application
+
 app = Flask(__name__)
 
 @app.route('/')
-
 def homepage():
     return render_template("index.html")
-print
+
+@app.route('/GETZipCode/<zip>', methods=['GET','POST'])
+def getZip(zip):
+    return zip
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
