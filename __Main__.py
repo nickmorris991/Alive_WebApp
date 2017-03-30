@@ -10,9 +10,6 @@ import json
 import argparse
 import sys
 
-#flask Microframework
-from flask import Flask, render_template
-
 
 try:
     # For Python 3.0 and later
@@ -65,16 +62,28 @@ def obtain_bearer_token(host, path):
 
 
 # flask application
+from flask import Flask, render_template
+from wtforms import StringField, validators
+from flask_wtf import FlaskForm
+from wtforms.validators import InputRequired
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'DontTellAnyone'
 
-@app.route('/')
+
+# form for zipcode
+class ZipForm(FlaskForm):
+    Zipcode = StringField('5 Digit Zipcode:', validators=[InputRequired()])
+
+
+@app.route('/', methods=['GET', 'POST'])
 def homepage():
-    return render_template("index.html")
+    form = ZipForm()
+    if form.validate_on_submit():
+        return form.Zipcode.data
+    return render_template('index.html', form=form)
 
-@app.route('/GETZipCode/<zip>', methods=['GET','POST'])
-def getZip(zip):
-    return zip
 
+# start the server
 if __name__ == "__main__":
     app.run(debug=True)
