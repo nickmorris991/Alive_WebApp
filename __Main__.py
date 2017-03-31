@@ -33,7 +33,7 @@ TOKEN_PATH = '/oauth2/token'
 GRANT_TYPE = 'client_credentials'
 SEARCH_LIMIT = 10
 
-# a POST call to obtain access token
+# a POST call to obtain access token should display in "response body"
 def obtain_bearer_token(host, path):
     """Given a bearer token, send a GET request to the API.
     Args:
@@ -58,7 +58,24 @@ def obtain_bearer_token(host, path):
     }
     response = requests.request('POST', url, data=data, headers=headers)
     bearer_token = response.json()['access_token']
-    return bearer_token #used to perform api queries
+    return bearer_token
+
+
+def search(bearer_token, term, location):
+    """Query the Search API by a search term and location.
+    Args:
+        term (str): The search term passed to the API.
+        location (str): The search location passed to the API.
+    Returns:
+        dict: The JSON response from the request.
+    """
+
+    url_params = {
+        'term': term.replace(' ', '+'),
+        'location': location.replace(' ', '+'),
+        'limit': SEARCH_LIMIT
+    }
+    return request(API_HOST, SEARCH_PATH, bearer_token, url_params=url_params)
 
 
 # flask application
@@ -71,17 +88,21 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'DontTellAnyone'
 
 
-# form for zipcode
-class ZipForm(FlaskForm):
+# class object for wtforms
+class SearchForm(FlaskForm):
     Zipcode = StringField('5 Digit Zipcode:', validators=[InputRequired()])
+    Keyword = StringField('Search Keyword:', validators=[InputRequired()])
 
 
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
-    form = ZipForm()
+    form = SearchForm()
     if form.validate_on_submit():
-        return form.Zipcode.data
+        obtain_bearer_token(API_HOST, TOKEN_PATH)
+        search(bearer_token, form.Keyword.data, form.Zipcode.data)
+        return form.Zipcode.data + " " + form.Keyword.data
     return render_template('index.html', form=form)
+
 
 
 # start the server
