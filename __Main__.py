@@ -122,8 +122,8 @@ app.config['SECRET_KEY'] = 'DontTellAnyone'
 
 class SearchForm(FlaskForm):
     """using flask wtforms to define two forms for user input
-    along with validators to ensure inpute to the search query
-    these wil be called in homepage and rendered to the template"""
+    along with validators to ensure input to the search query.
+    These wil be called in homepage and rendered to index.html"""
     Zipcode = StringField('5 Digit Zipcode:', validators=[InputRequired()])
     Keyword = StringField('Search Keywords:', validators=[InputRequired()])
 
