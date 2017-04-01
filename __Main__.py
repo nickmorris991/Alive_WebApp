@@ -40,6 +40,7 @@ GRANT_TYPE = 'client_credentials'
 SEARCH_LIMIT = 5
 
 
+
 def obtain_bearer_token(host, path):
     """Given a bearer token, send a GET request to the API.
     Args:
@@ -65,6 +66,7 @@ def obtain_bearer_token(host, path):
     response = requests.request('POST', url, data=data, headers=headers)
     bearer_token = response.json()['access_token']
     return bearer_token
+
 
 
 def request(host, path, bearer_token, url_params=None):
@@ -117,14 +119,20 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'DontTellAnyone'
 
 
-#object for wtforms
+
 class SearchForm(FlaskForm):
+    """using flask wtforms to define two forms for user input
+    along with validators to ensure inpute to the search query
+    these wil be called in homepage and rendered to the template"""
     Zipcode = StringField('5 Digit Zipcode:', validators=[InputRequired()])
     Keyword = StringField('Search Keywords:', validators=[InputRequired()])
 
 
+
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
+    """loads homepage of the web app and asks the user
+    to input their location and keywords for the search"""
     form = SearchForm()
     if form.validate_on_submit():
         return redirect(url_for('.queryResults'))
@@ -134,12 +142,16 @@ def homepage():
 
 @app.route('/Results', methods=['GET', 'POST'])
 def queryResults():
+    """redirects user to route '/Results' to display search query
+    and make suggestions on what the user should eat or do"""
     form = SearchForm()
     if form.validate_on_submit():
         access_token = obtain_bearer_token(API_HOST, TOKEN_PATH)
-        test = search(access_token, form.Keyword.data, form.Zipcode.data)
-        print(test)
-        return "testing"
+        query_dict = search(access_token, form.Keyword.data, form.Zipcode.data)
+        for item in query_dict['businesses']:
+            print ("ITEM BEGINS HERE_____:" + item['name'] + " " + str(item['rating']))
+            print (item['location'])
+        return "We recommend one of the following: "
     #return render_remplate('index.html', form=form)
 
 
