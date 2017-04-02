@@ -8,7 +8,6 @@
 
     <body bgcolor = "WhiteSmoke">
 
-
         <h2 align="left"> We recommend one of the following: </h2>
         <ol class="left">
             {% for item in data['businesses'] %}
@@ -17,7 +16,7 @@
                         <li> Establishment's rating: {{ item['rating'] }} </li>
                         <li> Phone: {{ item['phone'] }} </li>
                         <li> Address: {{ item['location']['display_address'] }} </li>
-                        <img src= {{ item['image_url'] }} style="width:128px;height:128px;">
+                        <img src= {{ item['image_url'] }} width="128" height="128" border="3">
                     </ul>
             {% endfor %}
         </ol>
