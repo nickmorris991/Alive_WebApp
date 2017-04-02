@@ -16,7 +16,9 @@
                         <li> Establishment's rating: {{ item['rating'] }} </li>
                         <li> Phone: {{ item['phone'] }} </li>
                         <li> Address: {{ item['location']['display_address'] }} </li>
-                        <img src= {{ item['image_url'] }} width="128" height="128" border="3">
+                        {% if item['image_url'] %}
+                            <img src= {{ item['image_url'] }} width="128" height="128" border="3">
+                        {% endif %}
                     </ul>
             {% endfor %}
         </ol>

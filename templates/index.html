@@ -13,6 +13,7 @@
         <h2> Lets make some plans together </h2>
         <form method="POST" action="/Results">
             {{ form.hidden_tag() }}
+            {{ form.csrf_token }}
             {{ render_field(form.Zipcode) }}
             {{ render_field(form.Keyword) }}
             <input type="submit" value="submit">

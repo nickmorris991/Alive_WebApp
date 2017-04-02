@@ -10,11 +10,13 @@ import json
 import argparse
 import sys
 
+
 # flask imports
 from flask import Flask, render_template, redirect, url_for
 from wtforms import StringField, validators
 from flask_wtf import FlaskForm
 from wtforms.validators import InputRequired
+
 
 try:
     # For Python 3.0 and later
@@ -113,17 +115,15 @@ def search(bearer_token, term, location):
 
 
 
-
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'DontTellAnyone'
 
 
 
 class SearchForm(FlaskForm):
-    """using flask wtforms to define two forms for user input
-    along with validators to ensure input to the search query.
-    These wil be called in homepage and rendered to index.html"""
+    """define two forms for user input along with validators
+    to ensure input to the search query.These wil be called in
+    homepage and rendered to index.html"""
     Zipcode = StringField('Enter Location:', validators=[InputRequired()])
     Keyword = StringField('Search Keywords:', validators=[InputRequired()])
 
@@ -131,8 +131,8 @@ class SearchForm(FlaskForm):
 
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
-    """loads homepage of the web app and asks the user
-    to input their location and keywords for the search"""
+    """homepage of the web app asks the user to input
+    their location and keywords for the search"""
     form = SearchForm()
     if form.validate_on_submit():
         return redirect(url_for('.queryResults'))
