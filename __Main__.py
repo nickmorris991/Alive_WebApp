@@ -124,7 +124,7 @@ class SearchForm(FlaskForm):
     """using flask wtforms to define two forms for user input
     along with validators to ensure input to the search query.
     These wil be called in homepage and rendered to index.html"""
-    Zipcode = StringField('5 Digit Zipcode:', validators=[InputRequired()])
+    Zipcode = StringField('Enter Location:', validators=[InputRequired()])
     Keyword = StringField('Search Keywords:', validators=[InputRequired()])
 
 
@@ -147,12 +147,8 @@ def queryResults():
     form = SearchForm()
     if form.validate_on_submit():
         access_token = obtain_bearer_token(API_HOST, TOKEN_PATH)
-        query_dict = search(access_token, form.Keyword.data, form.Zipcode.data)
-        for item in query_dict['businesses']:
-            print ("ITEM BEGINS HERE_____:" + item['name'] + " " + str(item['rating']))
-            print (item['location'])
-        return "We recommend one of the following: "
-    #return render_remplate('index.html', form=form)
+        data = search(access_token, form.Keyword.data, form.Zipcode.data)
+    return render_template('results.html', data=data)
 
 
 

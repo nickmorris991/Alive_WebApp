@@ -1,0 +1,27 @@
+{% from "_formhelpers.html" import render_field %}
+<html>
+    <head>
+        <meta name="description" content="Welcome to Alive Web App" >
+        <meta name="keywords" content="restaurant, search, suggestions" />
+        <title>We recommend one of the following</title>
+    </head>
+
+    <body bgcolor = "WhiteSmoke">
+
+
+        <h1 align="center"> We recommend one of the following: </h1>
+        <ol class="center">
+            {% for item in data['businesses'] %}
+                <li> {{ item['name'] }} </li>
+                <ul> <li> Establishment's rating: {{ item['rating'] }} </li>
+                     <li> Phone: {{ item['phone'] }} </li>
+                </ul>
+            {% endfor %}
+        </ol>
+
+        <style type="text/css">
+         .center { text-align: center; list-style-position:inside;}
+        </style>
+    </body>
+
+</html>
