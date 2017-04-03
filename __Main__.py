@@ -145,10 +145,11 @@ def queryResults():
     """redirects user to route '/Results' to display search query
     and make suggestions on what the user should eat or do"""
     form = SearchForm()
-    if form.validate_on_submit():
+    if form.validate_on_submit() and form.Keyword.data != '' and form.Zipcode.data !='':
         access_token = obtain_bearer_token(API_HOST, TOKEN_PATH)
         data = search(access_token, form.Keyword.data, form.Zipcode.data)
-    return render_template('results.html', data=data)
+        return render_template('results.html', data=data)
+    return redirect(url_for ('.homepage'))
 
 
 
