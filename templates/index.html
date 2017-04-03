@@ -4,6 +4,11 @@
         <meta name="description" content="Welcome to Alive Web App" >
         <meta name="keywords" content="restaurant, search, suggestions" />
         <title>Welcome to Alive Web Application</title>
+        <style>
+        p {
+            line-height: 0.05in;
+        }
+        </style>
     </head>
 
     <body bgcolor = "WhiteSmoke">
@@ -11,6 +16,8 @@
         <center>
         <font size = "12"> Welcome to Alive! </font>
         <h2> Lets make some plans together </h2>
+        <p><b> Enter what you'd like to do or where you'd like to eat below </p>
+        <p> i.e. Starbucks, cheap food, golfing etc. . .</b></p>
         <form method="POST" action="/Results">
             {{ form.hidden_tag() }}
             {{ render_field(form.Zipcode) }}
