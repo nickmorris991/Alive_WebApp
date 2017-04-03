@@ -39,7 +39,7 @@ SEARCH_PATH = '/v3/businesses/search'
 BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
 TOKEN_PATH = '/oauth2/token'
 GRANT_TYPE = 'client_credentials'
-SEARCH_LIMIT = 5
+SEARCH_LIMIT = 10
 
 
 
